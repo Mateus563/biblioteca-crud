@@ -4,3 +4,8 @@ git push
 
 na vm
 git pull
+
+Porta: 5432
+Banco: mateus_moras
+Usuario: mateus_moras
+Senha: 11f741dfabf6ed0682a7
