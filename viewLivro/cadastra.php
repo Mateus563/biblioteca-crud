@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <h2>Cadastro de Livro</h2>
+    <h2>Cadastro de Livro</h2> 
 
     
     <form action="" method="POST">
@@ -27,14 +27,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" name="autor" required> 
         <br>
        
-        <label>isbn</label>
-        <input type="text" name="isbn" required> 
+        <label>Editora</label>
+        <input type="text" name="editora" required> 
         <br>
 
 
         <label>Ano de Publicação</label>
         <input type="text" name="ano_publicacao" required> 
         <br>
+
+        <label>Quantidade</label>
+        <input type="text" name="quantidade" required>
 
         <button type="submit">Cadastrar</button> 
     </form>

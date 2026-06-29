@@ -14,7 +14,7 @@ $id   = $_GET['id'] ?? null;
 $emprestimo = $id ? $controller->buscarPorId($id) : null;
 
 if (!$emprestimo) {
-    header("Location: lista.php");
+    header("Location: lista.php");  isbn
     exit;
 }
 ?>
@@ -34,19 +34,19 @@ if (!$emprestimo) {
         <input type="hidden" name="id" value="<?= htmlspecialchars($emprestimo->getId()) ?>">
 
         <label>ID Leitor</label>
-        <input type="text" name="titulo" value="<?= htmlspecialchars($emprestimo->getIdLeitor()) ?>" required>
+        <input type="text" name="id_leitor" value="<?= htmlspecialchars($emprestimo->getIdLeitor()) ?>" required>
         <br>
 
         <label>ID Livro</label>
-        <input type="text" name="autor" value="<?= htmlspecialchars($emprestimo->getIdLivro()) ?>" required>
+        <input type="text" name="id_livro" value="<?= htmlspecialchars($emprestimo->getIdLivro()) ?>" required>
         <br>
 
         <label>Data de Locação</label>
-        <input type="text" name="isbn" value="<?= htmlspecialchars($emprestimo->getDataLocacao()) ?>" required>
+        <input type="text" name="data_locacao" value="<?= htmlspecialchars($emprestimo->getDataLocacao()) ?>" required>
         <br>
 
         <label>Data de Devolução</label>
-        <input type="text" name="ano_publicacao" value="<?= htmlspecialchars($emprestimo->getDataDevolucao()) ?>" required>
+        <input type="text" name="data_devolucao" value="<?= htmlspecialchars($emprestimo->getDataDevolucao()) ?>" required>
         <br>
 
 

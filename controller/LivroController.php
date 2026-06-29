@@ -9,7 +9,7 @@ class LivroController
     public function listar()
     {
         $dao = new LivroDao();
-        return $dao->listar();
+        return $dao->listar();  
     }
 
 

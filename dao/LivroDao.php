@@ -38,7 +38,7 @@ class LivroDao
             $row['editora'],
             $row['data_publicacao'],
             $row['quantidade'],
-            $row['id']
+            $row['id']    
         );
     }
 

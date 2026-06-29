@@ -41,14 +41,17 @@ if (!$livro) {
         <input type="text" name="autor" value="<?= htmlspecialchars($livro->getAutor()) ?>" required>
         <br>
 
-        <label>isbn</label>
-        <input type="text" name="isbn" value="<?= htmlspecialchars($livro->getIsbn()) ?>" required>
+        <label>Editora</label>
+        <input type="text" name="editora" value="<?= htmlspecialchars($livro->getEditora()) ?>" required>
         <br>
 
         <label>Ano de Publicação</label>
         <input type="text" name="ano_publicacao" value="<?= htmlspecialchars($livro->getAnoPublicacao()) ?>" required>
         <br>
 
+        <label>Quantidade</label>
+        <input type="text" name="quantidade" value="<?= htmlspecialchars($livro->getQuantidade()) ?>" required>
+        <br>
 
         <button type="submit">Salvar alterações</button>
     </form>

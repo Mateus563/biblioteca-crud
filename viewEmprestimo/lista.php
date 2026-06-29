@@ -21,7 +21,7 @@ $emprestimos = $controller->listar();
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>ID Leitor</th>
+                    <th>ID Leitor</th> 
                     <th>ID Livro</th>
                     <th>Data de Locação</th>
                     <th>Data de Devolução</th>
