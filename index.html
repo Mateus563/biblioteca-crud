@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Biblioteca</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 32px auto;
+                padding: 0 16px;
+            }
+            h1 {
+                margin-bottom: 24px;
+            }
+            label {
+                display: inline-block;
+                margin: 4px 0 2px;
+                font-size: 0.85rem;
+            }
+            input {
+                display: block;
+                padding: 6px 10px;
+                margin-bottom: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                width: 100%;
+            }
+            button {
+                padding: 7px 16px;
+                margin-right: 6px;
+                cursor: pointer;
+                border: 1px solid #999;
+                border-radius: 4px;
+                background: #f5f5f5;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 32px;
+            }
+            th,
+            td {
+                padding: 9px 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background: #f5f5f5;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Livro</h1>
+
+
+        <form
+            onsubmit="salvar(event)"
+            style="max-width: 400px; margin-top: 16px"
+        >
+            <input type="hidden" id="editandoId" />
+            <label>Titulo</label>
+            <input id="titulo" placeholder="Ex: Daisy Jones and the Six" required />
+            <label>Autor</label>
+            <input id="autor" placeholder="Ex: John Doe" required />
+            <label>Data de Publicação</label>
+            <input id="dataPublicacao" type="date" required />
+            <label>Editora</label>
+            <input id="editora" placeholder="Ex: Editora Paralela" required />
+            <label>Quantidade</label>
+            <input id="quantidade" type="number" placeholder="Ex: 51" required />
+            <button type="submit">Salvar</button>
+            <button
+                type="button"
+                id="btnCancelar"
+                style="display: none"
+                onclick="
+                    document.getElementById('editandoId').value = '';
+                    document.getElementById('btnCancelar').style.display = 'none';
+                    this.form.reset();
+                "
+            >
+                Cancelar
+            </button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Titulo</th>
+                    <th>Autor</th>
+                    <th>Data de Publicação</th>
+                    <th>Editora</th>
+                    <th>Quantidade</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+        </table>
+        <script>
+
+            let livros = JSON.parse(localStorage.getItem("livros")) || [];
+            let contadorId = livros.length > 0 ? Math.max(...livros.map(l => l.id)) : 0;
+
+            function salvarLocal() {
+                localStorage.setItem("livros", JSON.stringify(livros));
+            }
+
+            function carregar() {
+                let html = "";
+
+                for (const l of livros) {
+                    html += `
+                    <tr>
+                        <td>${l.id}</td>
+                        <td>${l.titulo}</td>
+                        <td>${l.autor}</td>
+                        <td>${l.data_publicacao}</td>
+                        <td>${l.editora}</td>
+                        <td>${l.quantidade}</td>
+                        <td>
+                            <button onclick="editar(${l.id})">Editar</button>
+                            <button onclick="deletar(${l.id})">Excluir</button>
+                        </td>
+                    </tr>`;
+                }
+
+                document.getElementById("lista").innerHTML = html;
+            }
+
+            function salvar(event) {
+                event.preventDefault();
+
+                const id = document.getElementById("editandoId").value;
+
+                const dados = {
+                    titulo: document.getElementById("titulo").value,
+                    autor: document.getElementById("autor").value,
+                    data_publicacao: document.getElementById("dataPublicacao").value,
+                    editora: document.getElementById("editora").value,
+                    quantidade: document.getElementById("quantidade").value,
+                };
+
+                if (id) {
+                    // editar
+                    const index = livros.findIndex(l => l.id == id);
+                    livros[index] = { id: Number(id), ...dados };
+                } else {
+                    // criar
+                    contadorId++;
+                    livros.push({ id: contadorId, ...dados });
+                }
+
+                salvarLocal();
+
+                document.getElementById("editandoId").value = "";
+                document.getElementById("btnCancelar").style.display = "none";
+                event.target.reset();
+
+                carregar();
+            }
+
+            function editar(id) {
+                const livro = livros.find(l => l.id === id);
+
+                document.getElementById("editandoId").value = livro.id;
+                document.getElementById("titulo").value = livro.titulo;
+                document.getElementById("autor").value = livro.autor;
+                document.getElementById("dataPublicacao").value = livro.data_publicacao;
+                document.getElementById("editora").value = livro.editora;
+                document.getElementById("quantidade").value = livro.quantidade;
+                document.getElementById("btnCancelar").style.display = "inline";
+            }
+
+            function deletar(id) {
+                if (!confirm("Excluir este livro?")) return;
+
+                livros = livros.filter(l => l.id !== id);
+                salvarLocal();
+                carregar();
+            }
+
+            carregar();
+        </script>
+
+
+
+
+
+
+        <h1>Leitor</h1>
+
+        <p>Consumindo: <code>http://localhost:8080</code></p>
+
+        <form
+            onsubmit="salvar(event)"
+            style="max-width: 400px; margin-top: 16px"
+        >
+            <input type="hidden" id="editandoId" />
+            <label>Nome</label>
+            <input id="nome" placeholder="Ex: Mateus" required />
+            <label>CPF</label>
+            <input id="cpf" placeholder="Ex: 123.456.789-00" required />
+            <label>CEP</label>
+            <input id="cep" placeholder="Ex: 90000-000" />
+            <button type="button" onclick="buscarCep()">Buscar CEP</button>
+            <br>
+            <label>Telefone</label>
+            <input id="telefone" placeholder="Ex: (51) 1234-5678" required />
+            <label>Email</label>
+            <input id="email" placeholder="Ex: exemplo@email.com" required />
+            <button type="submit">Salvar</button>
+            <button
+                type="button"
+                id="btnCancelar"
+                style="display: none"
+                onclick="
+                    document.getElementById('editandoId').value = '';
+                    document.getElementById('btnCancelar').style.display = 'none';
+                    this.form.reset();
+                "
+            >
+                Cancelar
+            </button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+        </table>
+
+        <script>
+            // Endereço base da API.
+            const API = "http://localhost:8080";
+
+            // GET /leitores — busca todos os leitores e monta a tabela
+            async function carregar() {
+                const resp = await fetch(`${API}/leitores`); 
+                const leitores = await resp.json();          
+
+                let html = "";
+                for (const l of leitores) {
+                    html += `
+        <tr>
+          <td>${l.id}</td>
+          <td>${l.nome}</td>
+          <td>${l.cpf}</td>
+          <td>${l.telefone}</td>
+          <td>${l.email}</td>
+          <td>
+            <button onclick="editar(${l.id})">Editar</button>
+            <button onclick="deletar(${l.id})">Excluir</button>
+          </td>
+        </tr>`;
+                }
+                document.getElementById("lista").innerHTML = html;
+            }
+
+            
+            async function salvar(event) {
+                event.preventDefault();
+
+                const id = document.getElementById("editandoId").value;
+
+                
+                const dados = {
+                    nome: document.getElementById("nome").value,
+                    cpf: document.getElementById("cpf").value,
+                    telefone: document.getElementById("telefone").value,
+                    email: document.getElementById("email").value,
+                };
+
+                if (id) {
+                   
+                    await fetch(`${API}/leitores/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(dados),
+                    });
+                } else {
+                    
+                    await fetch(`${API}/leitores`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(dados),
+                    });
+                }
+
+                document.getElementById("editandoId").value = "";
+                document.getElementById("btnCancelar").style.display = "none";
+                event.target.reset();
+                carregar(); // atualiza a tabela após salvar
+            }
+
+
+            async function editar(id) {
+                const resp = await fetch(`${API}/leitores/${id}`); 
+                const leitor = await resp.json();                
+
+              
+                document.getElementById("editandoId").value = leitor.id;
+                document.getElementById("nome").value = leitor.nome;
+                document.getElementById("cpf").value = leitor.cpf;
+                document.getElementById("telefone").value = leitor.telefone;
+                document.getElementById("email").value = leitor.email;
+                document.getElementById("btnCancelar").style.display = "inline";
+            }
+
+            
+            async function deletar(id) {
+                if (!confirm("Excluir este leitor?")) return;
+                await fetch(`${API}/leitores/${id}`, { method: "DELETE" }); 
+                carregar();
+            }
+
+            carregar();
+        </script>
+
+
+
+        <h1>Emprestimo</h1>
+
+        <p>Consumindo: <code>https://6a41b6a07602860e65206683.mockapi.io/emprestimo/emprestimo</code></p>
+
+        <form
+            onsubmit="salvar(event)"
+            style="max-width: 400px; margin-top: 16px"
+        >
+            <input type="hidden" id="editandoId" />
+            <label>ID Leitor</label>
+            <input id="id_leitor" placeholder="Ex: 1" required />
+            <label>ID Livro</label>
+            <input id="id_livro" placeholder="Ex: 1" required />
+            <label>Data de Locação</label>
+            <input type="date" id="data_locacao" required />
+            <label>Data de Devolução</label>
+            <input type="date" id="data_devolucao" required />
+            <button type="submit">Salvar</button>
+            <button
+                type="button"
+                id="btnCancelar"
+                style="display: none"
+                onclick="
+                    document.getElementById('editandoId').value = '';
+                    document.getElementById('btnCancelar').style.display = 'none';
+                    this.form.reset();
+                "
+            >
+                Cancelar
+            </button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ID Leitor</th>
+                    <th>ID Livro</th>
+                    <th>Data de Locação</th>
+                    <th>Data de Devolução</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+        </table>
+
+        <script>
+        const API = "https://6a41b6a07602860e65206683.mockapi.io/emprestimo/emprestimo";
+
+
+       async function carregarEmprestimos() {
+        const resp = await fetch(`${API}/emprestimos`);
+          const lista = await resp.json();
+
+          let html = "";
+
+         for (const e of lista) {
+        html += `
+        <tr>
+            <td>${e.id}</td>
+            <td>${e.livro_id}</td>
+            <td>${e.leitor_id}</td>
+            <td>${e.data_emprestimo}</td>
+            <td>${e.data_devolucao}</td>
+            <td>
+                <button onclick="editarEmprestimo('${e.id}')">Editar</button>
+                <button onclick="deletarEmprestimo('${e.id}')">Excluir</button>
+            </td>
+           </tr>`;
+        }
+
+        document.getElementById("listaEmprestimos").innerHTML = html;
+        }
+
+
+        async function salvarEmprestimo(event) {
+            event.preventDefault();
+
+            const id = document.getElementById("editandoEmprestimo").value;
+
+            const dados = {
+                livro_id: document.getElementById("livro").value,
+                leitor_id: document.getElementById("leitor").value,
+                data_emprestimo: document.getElementById("dataEmprestimo").value,
+                data_devolucao: document.getElementById("dataDevolucao").value
+            };
+
+            if (id) {
+                await fetch(`${API}/emprestimos/${id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(dados)
+                });
+            } else {
+                await fetch(`${API}/emprestimos`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(dados)
+                });
+            }
+
+            document.getElementById("editandoEmprestimo").value = "";
+            event.target.reset();
+
+            carregarEmprestimos();
+        }
+
+
+        async function editarEmprestimo(id) {
+            const resp = await fetch(`${API}/emprestimos/${id}`);
+            const e = await resp.json();
+
+            document.getElementById("editandoEmprestimo").value = e.id;
+            document.getElementById("livro").value = e.livro_id;
+            document.getElementById("leitor").value = e.leitor_id;
+            document.getElementById("dataEmprestimo").value = e.data_emprestimo;
+            document.getElementById("dataDevolucao").value = e.data_devolucao;
+        }
+
+
+        async function deletarEmprestimo(id) {
+            if (!confirm("Excluir empréstimo?")) return;
+
+            await fetch(`${API}/emprestimos/${id}`, {
+                method: "DELETE"
+            });
+
+            carregarEmprestimos();
+        }
+
+
+        carregarEmprestimos();
+        </script>
+
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

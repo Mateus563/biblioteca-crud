@@ -3,9 +3,9 @@
 require_once __DIR__ . '/../Database.php';
 require_once __DIR__ . '/../Leitor.php';
 
-class LivroDao
+class LeitorDao
 {
-    private $tabela     = 'leitores';
+    private $tabela     = 'leitor';
     private $connection;
 
     public function __construct()
@@ -16,11 +16,11 @@ class LivroDao
 
     public function salvar(Leitor $leitor)
     {
-        $sql  = "INSERT INTO $this->tabela (nome, cpf, cep, rua, bairro, cidade, telefone, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql  = "INSERT INTO $this->tabela (nome, cpf, telefone, email) VALUES (?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql); 
     
 
-        stmt->execute([$leitor->getNome (),$leitor->getCpf (),$leitor->getCep (),$leitor->getRua (),$leitor->getBairro (), $leitor->getCidade(), $leitor->getTelefone(), $leitor->getEmail()]);
+        $stmt->execute([$leitor->getNome (),$leitor->getCpf (), $leitor->getTelefone(), $leitor->getEmail()]);
     }
 
     public function buscarporId($id)
@@ -35,12 +35,8 @@ class LivroDao
         return new Leitor(
             $row['nome'],
             $row['cpf'],
-            $row['cep'],
-            $row['rua'],
-            $row['bairro'],
-            $row['cidade'],
             $row['telefone'],
-            $row['email']
+            $row['email'],
             $row['id']
         );
     }
@@ -58,22 +54,18 @@ class LivroDao
         $stmt = $this->connection->query($sql); 
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $livros = [];
+        $leitores = [];
 
         foreach ($rows as $row) {
             $leitores[] = new Leitor(
                 $row['nome'],
                 $row['cpf'],
-                $row['cep'],
-                $row['rua'],
-                $row['bairro'],
-                $row['cidade'],
                 $row['telefone'],
-                $row['email']
+                $row['email'],
                 $row['id']
             );
         }
         
-        return $livros;
+        return $leitores;
     }
 }

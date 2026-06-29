@@ -5,7 +5,7 @@ require_once __DIR__ . '/../Livro.php';
 
 class LivroDao
 {
-    private $tabela     = 'livros';
+    private $tabela     = 'livro';
     private $connection;
 
     public function __construct()
@@ -42,16 +42,17 @@ class LivroDao
         );
     }
 
-    public function atualizar(TimeFutebol $time)
+    public function atualizar(Livro $livro)
     {
-        $sql  = "UPDATE $this->tabela SET titulo = ?, autor = ?, editora = ?, data_publicacao, quantidade = ? WHERE id = ?";
+        $sql  = "UPDATE $this->tabela SET titulo = ?, autor = ?, editora = ?, data_publicacao = ?, quantidade = ? WHERE id = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
-            $time->getNome(),
-            $time->getFundacao(),
-            $time->getEstadio(),
-            $time->getCorPrincipal(),
-            $time->getId()
+            $livro->getTitulo(),
+            $livro->getAutor(),
+            $livro->getEditora(),
+            $livro->getDataPublicacao(),
+            $livro->getQuantidade(),
+            $livro->getId()
         ]);
     }
 
@@ -76,7 +77,7 @@ class LivroDao
                 $row['autor'],
                 $row['editora'],
                 $row['data_publicacao'],
-                $row['quantidade']
+                $row['quantidade'],
                 $row['id'] 
             );
         }
