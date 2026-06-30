@@ -16,12 +16,11 @@ class LeitorDao
 
     public function salvar(Leitor $leitor)
     {
-        $sql  = "INSERT INTO $this->tabela (nome, cpf, cep, telefone, email) VALUES (?, ?, ?, ?, ?)";
+        $sql  = "INSERT INTO $this->tabela (nome, cpf, telefone, email) VALUES (?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
             $leitor->getNome(),
             $leitor->getCpf(),
-            $leitor->getCep(),
             $leitor->getTelefone(),
             $leitor->getEmail()
         ]);
@@ -39,7 +38,6 @@ class LeitorDao
         return new Leitor(
             $row['nome'],
             $row['cpf'],
-            $row['cep'],
             $row['telefone'],
             $row['email'],
             $row['id']
@@ -48,12 +46,11 @@ class LeitorDao
 
     public function atualizar(Leitor $leitor)
     {
-        $sql  = "UPDATE $this->tabela SET nome = ?, cpf = ?, cep = ?, telefone = ?, email = ? WHERE id = ?";
+        $sql  = "UPDATE $this->tabela SET nome = ?, cpf = ?, telefone = ?, email = ? WHERE id = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
             $leitor->getNome(),
             $leitor->getCpf(),
-            $leitor->getCep(),
             $leitor->getTelefone(),
             $leitor->getEmail(),
             $leitor->getId()
@@ -79,7 +76,6 @@ class LeitorDao
             $leitores[] = new Leitor(
                 $row['nome'],
                 $row['cpf'],
-                $row['cep'],
                 $row['telefone'],
                 $row['email'],
                 $row['id']

@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Database.php';
-require_once __DIR__ . '../model/Livro.php';
+require_once __DIR__ . '/../model/Livro.php';
 
 class LivroDao
 {

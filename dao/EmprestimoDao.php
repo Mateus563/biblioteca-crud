@@ -1,12 +1,11 @@
 <?php
 
 require_once __DIR__ . '/../Database.php';
-require_once __DIR__ . '/../Leitor.php';
-require_once __DIR__ . '/../Emprestimo.php';
+require_once __DIR__ . '/../model/Emprestimo.php';
 
 class EmprestimoDao
 {
-    private $tabela     = 'Emprestimo';
+    private $tabela     = 'emprestimo';
     private $connection;
 
     public function __construct()
@@ -40,6 +39,19 @@ class EmprestimoDao
             $row['data_devolucao'],
             $row['id']
         );
+    }
+
+    public function atualizar(Emprestimo $emprestimo)
+    {
+        $sql  = "UPDATE $this->tabela SET id_leitor = ?, id_livro = ?, data_locacao = ?, data_devolucao = ? WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([
+            $emprestimo->getIdLeitor(),
+            $emprestimo->getIdLivro(),
+            $emprestimo->getDataLocacao(),
+            $emprestimo->getDataDevolucao(),
+            $emprestimo->getId()
+        ]);
     }
 
     public function deletar($id)

@@ -1,9 +1,9 @@
 <?php
 
 
-class Leitor
+class Emprestimo
 {
-    private $id;       
+    private $id;
     private $id_leitor;       
     private $id_livro;   
     private $data_locacao;

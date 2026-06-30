@@ -25,7 +25,6 @@ class LeitorController
         $leitor = new Leitor(
             $_POST['nome'],
             $_POST['cpf'],
-            $_POST['cep'],
             $_POST['telefone'],
             $_POST['email'],
             $_POST['id']
@@ -51,10 +50,9 @@ class LeitorController
     {
 
         $leitor = new Leitor(
-            $_POST['nome'],         
-            $_POST['cpf'],     
-            $_POST['cep'],      
-            $_POST['telefone'],  
+            $_POST['nome'],
+            $_POST['cpf'],
+            $_POST['telefone'],
             $_POST['email']
         );
 
