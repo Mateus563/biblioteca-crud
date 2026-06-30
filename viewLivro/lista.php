@@ -1,5 +1,5 @@
 <?php
-// lista todos os livros cadastrados
+
 require_once __DIR__ . '/../controller/LivroController.php';
 
 $controller = new LivroController();
@@ -13,18 +13,19 @@ $livros      = $controller->listar();
     <title>Livros</title>
 </head>
 <body>
-
+ano
     <h2>Livros cadastrados</h2>
 
-    <?php if (count($livros) > 0): 
+    <?php if (count($livros) > 0): ?>
         <table border="1">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Título</th>
                     <th>Autor</th>
-                    <th>ISBN</th>
-                    <th>Ano de Publicação</th>
+                    <th>Editora</th>
+                    <th>Data de Publicação</th>
+                    <th>Quantidade</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -34,8 +35,9 @@ $livros      = $controller->listar();
                         <td><?= $livro->getId() ?></td>
                         <td><?= $livro->getTitulo() ?></td>
                         <td><?= $livro->getAutor() ?></td>
-                        <td><?= $livro->getIsbn() ?></td>
-                        <td><?= $livro->getAnoPublicacao() ?></td>
+                        <td><?= $livro->getEditora() ?></td>
+                        <td><?= $livro->getDataPublicacao() ?></td>
+                        <td><?= $livro->getQuantidade() ?></td>
                         <td>
                            
                             <a href="edita.php?id=<?= $livro->getId() ?>">Editar</a>

@@ -22,12 +22,10 @@ class Livro
         $this->id                 = $id;           
     }
 
-
-    public function getId()           { return $this->id; }
+    public function getId()             { return $this->id; }
     public function getTitulo()         { return $this->titulo; }
-    public function getAutor()        { return $this->autor; }
-    public function getEditora()      { return $this->editora; }
+    public function getAutor()          { return $this->autor; }
+    public function getEditora()        { return $this->editora; }
     public function getDataPublicacao() { return $this->data_publicacao; }
-    public function getQuantidade()   { return $this->quantidade; }
-
-}
+    public function getQuantidade()     { return $this->quantidade; }
+} 

@@ -1,5 +1,5 @@
 <?php
-// lista todos os leitores cadastrados
+
 require_once __DIR__ . '/../controller/LeitorController.php';
 
 $controller = new LeitorController();
@@ -16,7 +16,7 @@ $leitores      = $controller->listar();
 
     <h2>Leitores cadastrados</h2>
 
-    <?php if (count($leitores) > 0): 
+    <?php if (count($leitores) > 0): ?>
         <table border="1">
             <thead>
                 <tr>
@@ -42,7 +42,7 @@ $leitores      = $controller->listar();
 
                             <a href="edita.php?id=<?= $leitor->getId() ?>">Editar</a>
 
-
+                           
                             <form action="deleta.php" method="POST" style="display:inline"
                                   onsubmit="return confirm('Deseja realmente excluir o leitor <?= $leitor->getNome() ?>?')">
                                 <input type="hidden" name="id" value="<?= $leitor->getId() ?>">

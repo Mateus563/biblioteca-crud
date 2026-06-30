@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Database.php';
-require_once __DIR__ . '/../Leitor.php';
+require_once __DIR__ . '/../model/Leitor.php';
 
 class LeitorDao
 {
@@ -10,17 +10,21 @@ class LeitorDao
 
     public function __construct()
     {
-        $db                = new Database(); 
+        $db                = new Database();
         $this->connection  = $db->connection;
     }
 
     public function salvar(Leitor $leitor)
     {
-        $sql  = "INSERT INTO $this->tabela (nome, cpf, telefone, email) VALUES (?, ?, ?, ?)";
-        $stmt = $this->connection->prepare($sql); 
-    
-
-        $stmt->execute([$leitor->getNome (),$leitor->getCpf (), $leitor->getTelefone(), $leitor->getEmail()]);
+        $sql  = "INSERT INTO $this->tabela (nome, cpf, cep, telefone, email) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([
+            $leitor->getNome(),
+            $leitor->getCpf(),
+            $leitor->getCep(),
+            $leitor->getTelefone(),
+            $leitor->getEmail()
+        ]);
     }
 
     public function buscarporId($id)
@@ -35,10 +39,25 @@ class LeitorDao
         return new Leitor(
             $row['nome'],
             $row['cpf'],
+            $row['cep'],
             $row['telefone'],
             $row['email'],
             $row['id']
         );
+    }
+
+    public function atualizar(Leitor $leitor)
+    {
+        $sql  = "UPDATE $this->tabela SET nome = ?, cpf = ?, cep = ?, telefone = ?, email = ? WHERE id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([
+            $leitor->getNome(),
+            $leitor->getCpf(),
+            $leitor->getCep(),
+            $leitor->getTelefone(),
+            $leitor->getEmail(),
+            $leitor->getId()
+        ]);
     }
 
     public function deletar($id)
@@ -50,8 +69,8 @@ class LeitorDao
 
     public function listar()
     {
-        $sql  = "SELECT * FROM $this->tabela";  
-        $stmt = $this->connection->query($sql); 
+        $sql  = "SELECT * FROM $this->tabela";
+        $stmt = $this->connection->query($sql);
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $leitores = [];
@@ -60,12 +79,13 @@ class LeitorDao
             $leitores[] = new Leitor(
                 $row['nome'],
                 $row['cpf'],
+                $row['cep'],
                 $row['telefone'],
                 $row['email'],
                 $row['id']
             );
         }
-        
+
         return $leitores;
     }
 }

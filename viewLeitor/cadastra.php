@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <br>
        
         <label>CEP do Leitor</label>
-        <input type="text" id="cep" placeholder="00000-000">
+        <input type="text" id="cep" name="cep" placeholder="00000-000" required>
         <button type="button" onclick="buscarCep()">Buscar CEP</button>
         <br>
 
@@ -36,8 +36,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <input type="text" id="cidade" readonly>
         <br>
 
-        <label>Cor principal</label>
-        <input type="text" name="corprincipal" required> 
+        <label>Telefone</label>
+        <input type="text" name="telefone" required>
+        <br>
+
+        <label>Email</label>
+        <input type="email" name="email" required>
         <br>
 
         <button type="submit">Cadastrar</button> 

@@ -45,8 +45,8 @@ if (!$livro) {
         <input type="text" name="editora" value="<?= htmlspecialchars($livro->getEditora()) ?>" required>
         <br>
 
-        <label>Ano de Publicação</label>
-        <input type="text" name="ano_publicacao" value="<?= htmlspecialchars($livro->getAnoPublicacao()) ?>" required>
+        <label>Data de Publicação</label>
+        <input type="text" name="data_publicacao" value="<?= htmlspecialchars($livro->getDataPublicacao()) ?>" required>
         <br>
 
         <label>Quantidade</label>

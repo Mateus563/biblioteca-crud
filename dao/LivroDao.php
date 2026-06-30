@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../Database.php';
-require_once __DIR__ . '/../Livro.php';
+require_once __DIR__ . '../model/Livro.php';
 
 class LivroDao
 {
@@ -20,7 +20,7 @@ class LivroDao
         $stmt = $this->connection->prepare($sql); 
     
 
-        stmt->execute([$livro->getTitulo (),$livro->getAutor (),$livro->getEditora (),$livro->getDataPublicacao (),$livro->getQuantidade ()]);
+        $stmt->execute([$livro->getTitulo (),$livro->getAutor (),$livro->getEditora (),$livro->getDataPublicacao (),$livro->getQuantidade ()]);
     }
 
     public function buscarporId($id)
